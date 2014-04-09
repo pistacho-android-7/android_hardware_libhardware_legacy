@@ -14,6 +14,18 @@ LOCAL_SHARED_LIBRARIES := libcutils liblog
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/include
 LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)/include
 
+ifeq ($(USES_TI_MAC80211), true)
+LOCAL_CFLAGS  += -DUSES_TI_MAC80211
+ifneq ($(wildcard external/libnl),)
+LOCAL_SHARED_LIBRARIES += libnl
+INCLUDES += external/libnl/include
+else
+LOCAL_STATIC_LIBRARIES := libnl_2
+LOCAL_C_INCLUDES += external/libnl-headers
+endif
+LOCAL_C_INCLUDES += hardware/ti/wlan/mac80211/wpa_supplicant_lib
+endif
+
 LOCAL_CFLAGS  += -DQEMU_HARDWARE -Wno-unused-parameter -Wno-gnu-designator
 QEMU_HARDWARE := true
 
