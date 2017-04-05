@@ -42,6 +42,10 @@ ifdef WIFI_BYPASS_FWRELOAD
 LOCAL_CFLAGS += -DWIFI_BYPASS_FWRELOAD=\"$(WIFI_BYPASS_FWRELOAD)\"
 endif
 
+ifdef WIFI_DRIVER_MAC_PROP
+LOCAL_CFLAGS  += -DWIFI_DRIVER_MAC_PROP=\"$(WIFI_DRIVER_MAC_PROP)\"
+endif
+
 ifeq ($(BOARD_WLAN_DEVICE),UNITE)
   LOCAL_C_INCLUDES += $(LOCAL_PATH)/../../external/wpa_supplicant_ath/wpa_supplicant/src/common
 ifeq ($(TARGET_PRODUCT),sabresd_7d)

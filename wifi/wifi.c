@@ -275,13 +275,21 @@ int wifi_load_driver()
 {
 #ifdef WIFI_DRIVER_MODULE_PATH
     char driver_status[PROPERTY_VALUE_MAX];
+    char args[PROPERTY_VALUE_MAX] = {0};
+    char mac[PROPERTY_VALUE_MAX];
     int count = 100; /* wait at most 20 seconds for completion */
 
     if (is_wifi_driver_loaded()) {
         return 0;
     }
 
-    if (insmod(DRIVER_MODULE_PATH, DRIVER_MODULE_ARG) < 0)
+#ifdef WIFI_DRIVER_MAC_PROP
+    if (property_get(WIFI_DRIVER_MAC_PROP, mac, NULL)) {
+        snprintf(args, sizeof(args), "mac=%s %s", mac, DRIVER_MODULE_ARG);
+    }
+#endif
+
+    if (insmod(DRIVER_MODULE_PATH, args[0] ? args : DRIVER_MODULE_ARG) < 0)
         return -1;
 
     if (strcmp(FIRMWARE_LOADER,"") == 0) {
